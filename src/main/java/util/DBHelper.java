@@ -69,6 +69,11 @@ public class DBHelper {
         configuration.setProperty("hibernate.connection.password", "19181938");
         configuration.setProperty("hibernate.show_sql", "true");
         configuration.setProperty("hibernate.hbm2ddl.auto", "validate");  //"create"  update validate
+
+
+        configuration.setProperty("hibernate.connection.CharSet", "utf8");
+        configuration.setProperty("hibernate.connection.characterEncoding", "utf8");
+        configuration.setProperty("hibernate.connection.useUnicode", "true");
         return configuration;
     }
 
@@ -81,8 +86,8 @@ public class DBHelper {
     }
 
 
-
     private static Connection getMySqlConnection() {
+
         try {
             DriverManager.registerDriver((Driver) Class.forName("com.mysql.cj.jdbc.Driver").newInstance());
 
@@ -107,6 +112,7 @@ public class DBHelper {
     }
 
 }
+
 
 
 

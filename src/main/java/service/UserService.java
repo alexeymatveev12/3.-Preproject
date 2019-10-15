@@ -33,7 +33,7 @@ public class UserService {
 
     public static UserService getInstance() {
         if (userService == null) {
-            userService = new UserService(UserDaoFactory.getUserDao());
+            userService = new UserService(new UserDaoFactory().getUserDao());
         }
         return userService;
     }
@@ -77,12 +77,13 @@ public class UserService {
         // Проверка, существует ли клиент в сервисе. Добавить если нет
         if (user.getName() != null && user.getName().length() > 0
                 && user.getLogin() != null && user.getLogin().length() > 0
-                && user.getPassword() != null && user.getPassword().length() > 0) {
-            if (checkUserByName(user.getName()) && (checkUserByLogin(user.getLogin()))) {
+                && user.getPassword() != null && user.getPassword().length() > 0)
+     //   {
+      //      if (checkUserByName(user.getName()) && (checkUserByLogin(user.getLogin()))) {
                 userDao.addUserDao(user);
-            }
+        //    }
         }
-    }
+
 
 
     public void deleteUserById(Long id) {

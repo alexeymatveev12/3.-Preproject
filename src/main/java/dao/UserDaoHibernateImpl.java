@@ -14,16 +14,18 @@ import java.util.List;
 
 public class UserDaoHibernateImpl implements UserDao {
 
-    private Session session;
+   // private Session session;
 
-    public UserDaoHibernateImpl(Session session) {
-        this.session = session;
+    private SessionFactory sessionFactory;
+
+    public UserDaoHibernateImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
     //1-й получить список всех пользователей
     @Override
     public List<User> getAllUsersDao() {
-
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         List<User> allUsers = session.createQuery("FROM User").list();
         transaction.commit();
@@ -36,7 +38,7 @@ public class UserDaoHibernateImpl implements UserDao {
     //2-й получить пользователя по ID
     @Override
     public User getUserByIdDao(long id) throws SQLException {
-      //  Session session = sessionFactory.openSession();
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         Query query = session.createQuery("from User where id = :userId");
         List<User> userList = query.setParameter("userId", id).list();
@@ -50,7 +52,7 @@ public class UserDaoHibernateImpl implements UserDao {
     //3-й проверить есть ли зарегистрированный пользователь с искомым именем
     @Override
     public boolean checkUserByNameDao(String name) throws SQLException {
-        //  Session session = sessionFactory.openSession();
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         Query query = session.createQuery("from User where name = :userName");
         List<User> userList = query.setParameter("userName", name).list();
@@ -65,7 +67,7 @@ public class UserDaoHibernateImpl implements UserDao {
     //4-й проверить есть ли зарегистрированный пользователь с искомым логином
     @Override
     public boolean checkUserByLoginDao(String login) throws SQLException {
-        //  Session session = sessionFactory.openSession();
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         Query query = session.createQuery("from User where login = :userLogin");
         List<User> userList = query.setParameter("userLogin", login).list();
@@ -79,6 +81,7 @@ public class UserDaoHibernateImpl implements UserDao {
     //5-й создать и добавить в базу нового пользователя
     @Override
     public void addUserDao(User user) {
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         session.save(user);
         transaction.commit();
@@ -88,6 +91,7 @@ public class UserDaoHibernateImpl implements UserDao {
     //6-й обновить и записать в базу новые данные пользователя
    // @Override
     public void updateUserDao2(User user) {
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         session.saveOrUpdate(user);
         transaction.commit();
@@ -97,6 +101,7 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public void updateUserDao(User user) {
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         session.createQuery("UPDATE User SET name=:name, login=:login, password=:password WHERE id=:id")
                 .setParameter("name", user.getName())
@@ -111,7 +116,8 @@ public class UserDaoHibernateImpl implements UserDao {
     //7-й удалить пользователя через ID
     @Override
     public void deleteUserByIdDao(Long id) throws SQLException {
-  //      try {
+        Session session = sessionFactory.openSession();
+        //      try {
             Transaction transaction = session.beginTransaction();
             Query query = session.createQuery("DELETE FROM User WHERE id = :userId");
             query.setParameter("userId", id);

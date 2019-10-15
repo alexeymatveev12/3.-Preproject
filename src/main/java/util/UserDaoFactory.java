@@ -44,12 +44,10 @@ public class UserDaoFactory {
         getDriverProperty();
         String driverDB = property.getProperty("driverDB");
 
-        DBHelper dbHelper = new DBHelper();
-
         if (driverDB.equals("hibernate")) {
-            userDao = new UserDaoHibernateImpl(DBHelper.getSessionFactory().openSession());
+            userDao = new UserDaoHibernateImpl(DBHelper.getSessionFactory());
         } else if (driverDB.equals("jdbc")) {
-            userDao = new UserDaoJDBCimpl(DBHelper.getConnection());
+            userDao = new UserDaoJDBCimpl(DBHelper.getInstance().getConnection());
         }
             return userDao;
 
